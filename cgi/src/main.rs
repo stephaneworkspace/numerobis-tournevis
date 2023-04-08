@@ -1,7 +1,6 @@
 extern crate cgi;
 extern crate numerobis_tournevis;
 
-use numerobis_tournevis::numerologie::numerologie::CycleAdjacentType::Formatif;
 use numerobis_tournevis::numerologie::NumerologieCore;
 
 fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
@@ -35,20 +34,34 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
         }
         params.push((a, b));
     }
-
-    let re = format!("{:?}", params);
+    let mut year = 1984;
+    let mut month = 4;
+    let mut day = 1;
+    for x in params.iter() {
+        match x.0.as_str() {
+           "year" => {
+               year = x.1.parse().unwrap_or(1984);
+           }
+           "month" => {
+               month = x.1.parse().unwrap_or(4);
+           }
+           "day" => {
+               day = x.1.parse().unwrap_or(1);
+           }, _ => {}
+       }
+    }
     let core = NumerologieCore {
-        year: 1984,
-        month: 4,
-        day: 1,
-        bsFirstName: "John".to_string(),
-        bsSecondName: "".to_string(),
-        bsThirdName: "".to_string(),
-        bsLastName1: "Doe".to_string(),
-        bsLastName2: "".to_string(),
-        bsLastName3: "".to_string(),
-        bsTel: "".to_string(),
-        bsMobile: "".to_string()
+        year,
+        month,
+        day,
+        first_name: "John".to_string(),
+        second_name: "".to_string(),
+        third_name: "".to_string(),
+        last_name_1: "Doe".to_string(),
+        last_name_2: "".to_string(),
+        last_name_3: "".to_string(),
+        tel: "".to_string(),
+        mobile: "".to_string()
     };
     let cycles_adjacents = core.cycles_adjacents();
     let data = serde_json::to_string(&cycles_adjacents).unwrap(); // TODO

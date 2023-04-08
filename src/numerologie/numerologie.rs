@@ -6,14 +6,14 @@ pub struct NumerologieCore {
     pub year: i32,
     pub month: i32,
     pub day: i32,
-    pub bsFirstName: String,
-    pub bsSecondName: String,
-    pub bsThirdName: String,
-    pub bsLastName1: String,
-    pub bsLastName2: String,
-    pub bsLastName3: String,
-    pub bsTel: String,
-    pub bsMobile: String
+    pub first_name: String,
+    pub second_name: String,
+    pub third_name: String,
+    pub last_name_1: String,
+    pub last_name_2: String,
+    pub last_name_3: String,
+    pub tel: String,
+    pub mobile: String
 }
 
 impl NumerologieCore {
