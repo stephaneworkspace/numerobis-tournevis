@@ -19,7 +19,7 @@ pub enum Colonne {
 
 pub fn colonne(lettre: &str) -> Colonne {
     use Colonne::*;
-    let l: &str = lettre.to_uppercase();
+    let l: &str = &lettre.to_uppercase();
     match l {
         "A" =>
             Droite,
@@ -148,7 +148,7 @@ pub fn colonne(lettre: &str) -> Colonne {
 
 pub fn lettre_simple(lettre: &str) -> i32 {
     use Colonne::*;
-    let l: &str = lettre.to_uppercase();
+    let l: &str = &lettre.to_uppercase();
     match l {
         "A" =>
             1,
@@ -282,9 +282,9 @@ pub fn lettre_colonne(lettre: &str) -> (i32, Colonne) {
 }
 
 pub fn str_vers_nombre(str: &str) -> i32 {
-    let nombre = 0;
-    for s in str {
-        let n = self::lettre_simple(s);
+    let mut nombre = 0;
+    for s in str.split_whitespace() {
+        let n = lettre_simple(s);
         nombre += n;
     }
     nombre
