@@ -20,9 +20,12 @@ impl NumerologieCore {
     pub fn cycles_adjacents(&self) -> Vec<CycleAdjacent> {
         use CycleAdjacentType::*;
         let mut vec: Vec<CycleAdjacent> = Vec::new();
-        vec.push(NumerologieCore::cycle_adjacent(self, Formatif));
-        vec.push(NumerologieCore::cycle_adjacent(self, Productif));
-        vec.push(NumerologieCore::cycle_adjacent(self, Moisson));
+        let ca = NumerologieCore::cycle_adjacent(self, Formatif);
+        vec.push(ca);
+        let ca = NumerologieCore::cycle_adjacent(self, Productif);
+        vec.push(ca);
+        let ca = NumerologieCore::cycle_adjacent(self, Moisson);
+        vec.push(ca);
         vec
     }
 
@@ -71,7 +74,8 @@ impl NumerologieCore {
             for (i, _) in t.chars().enumerate() {
                 let s_temp: String = i_temp.to_string();
                 let c_temp = s_temp.chars().nth(i).unwrap();
-                i_temp_2 = c_temp as i32;
+                let c_temp_string: String = String::from(c_temp);
+                i_temp_2 += c_temp_string.parse().unwrap_or(0);
             }
             i_temp = i_temp_2
         }
