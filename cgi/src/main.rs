@@ -33,5 +33,15 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
     }
 
     let re = format!("{:?}", params);
-    cgi::text_response(200, re)
+    // cgi::text_response(200, re)
+    let data = r#"
+        {
+            "name": "John Doe",
+            "age": 43,
+            "phones": [
+                "+44 1234567",
+                "+44 2345678"
+            ]
+        }"#;
+    cgi::binary_response(200, "application/javascript", Vec::from(data.as_bytes()))
 })}
