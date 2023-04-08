@@ -4,6 +4,12 @@ pub struct NumerologieCore {
     pub ws: i32,
 }
 
+pub enum Cycle {
+    Formatif,
+    Productif,
+    Moisson
+}
+
 pub enum Colonne {
     Gauche,
     Droite,
@@ -274,11 +280,12 @@ pub fn lettre_colonne(lettre: &str) -> (i32, Colonne) {
     let nombre: i32 = lettre_simple(&lettre);
     (nombre, colonne)
 }
-/*pub fn charsToInt(chars: &str) -> i32 {
-    let nbr = 0;
-    for l in chars {
-        let n: Int = self::NumerologieCore::
-        nombre = n + nombre;
+
+pub fn str_vers_nombre(str: &str) -> i32 {
+    let nombre = 0;
+    for s in str {
+        let n = self::lettre_simple(s);
+        nombre += n;
     }
-    nbr
-}*/
+    nombre
+}
