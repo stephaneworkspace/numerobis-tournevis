@@ -1,10 +1,93 @@
+use serde::{Serialize};
+
 /// NumerologieCore
 #[derive(Debug, Clone)]
 pub struct NumerologieCore {
-    pub ws: i32,
+    pub year: i32,
+    pub month: i32,
+    pub day: i32,
+    pub bsFirstName: String,
+    pub bsSecondName: String,
+    pub bsThirdName: String,
+    pub bsLastName1: String,
+    pub bsLastName2: String,
+    pub bsLastName3: String,
+    pub bsTel: String,
+    pub bsMobile: String
 }
 
-pub enum Cycle {
+impl NumerologieCore {
+    pub fn cycles_adjacents(&self) -> Vec<CycleAdjacent> {
+        use CycleAdjacentType::*;
+        let mut vec: Vec<CycleAdjacent> = Vec::new();
+        vec.push(NumerologieCore::cycle_adjacent(self, Formatif));
+        vec.push(NumerologieCore::cycle_adjacent(self, Productif));
+        vec.push(NumerologieCore::cycle_adjacent(self, Moisson));
+        vec
+    }
+
+    pub fn cycle_adjacent(&self, cycle_type: CycleAdjacentType) -> CycleAdjacent {
+        use CycleAdjacentType::*;
+        let calcul = match cycle_type {
+            Formatif => {
+                self.month
+            },
+            Productif => {
+                self.day
+            },
+            Moisson => {
+                self.year
+            }
+        };
+        let calcul_string = match cycle_type {
+            Formatif => {
+                "Mois"
+            },
+            Productif => {
+                "Jour"
+            },
+            Moisson => {
+                "Année"
+            }
+        };
+        CycleAdjacent {
+            cycle: cycle_type,
+            calcul: calcul_string.to_string(),
+            nombre: NumerologieCore::reduction(calcul)
+        }
+    }
+
+    fn reduction(nombre: i32) -> Vec<i32> {
+        let mut ai_res : Vec<i32> = Vec::new();
+        let mut i_temp: i32 = nombre;
+        let mut b_done: bool = false;
+        while !b_done {
+            ai_res.push(i_temp);
+            if i_temp.to_string().chars().count() == 1 {
+                b_done = true;
+            }
+            let mut i_temp_2: i32 = 0;
+            let t = i_temp.to_string();
+            for (i, _) in t.chars().enumerate() {
+                let s_temp: String = i_temp.to_string();
+                let c_temp = s_temp.chars().nth(i).unwrap();
+                i_temp_2 = c_temp as i32;
+            }
+            i_temp = i_temp_2
+        }
+        return ai_res
+    }
+}
+
+#[derive(Serialize)]
+pub struct CycleAdjacent {
+    pub cycle: CycleAdjacentType,
+    pub calcul: String,
+    pub nombre: Vec<i32>
+}
+
+#[derive(Serialize)]
+pub enum CycleAdjacentType {
     Formatif,
     Productif,
     Moisson
@@ -147,7 +230,6 @@ pub fn colonne(lettre: &str) -> Colonne {
 }
 
 pub fn lettre_simple(lettre: &str) -> i32 {
-    use Colonne::*;
     let l: &str = &lettre.to_uppercase();
     match l {
         "A" =>

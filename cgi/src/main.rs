@@ -1,4 +1,8 @@
 extern crate cgi;
+extern crate numerobis_tournevis;
+
+use numerobis_tournevis::numerologie::numerologie::CycleAdjacentType::Formatif;
+use numerobis_tournevis::numerologie::NumerologieCore;
 
 fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
     let request_str = format!("{:?}", &request);
@@ -33,15 +37,21 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
     }
 
     let re = format!("{:?}", params);
-    // cgi::text_response(200, re)
-    let data = r#"
-        {
-            "name": "John Doe",
-            "age": 43,
-            "phones": [
-                "+44 1234567",
-                "+44 2345678"
-            ]
-        }"#;
-    cgi::binary_response(200, "application/javascript", Vec::from(data.as_bytes()))
+    let core = NumerologieCore {
+        year: 1984,
+        month: 4,
+        day: 1,
+        bsFirstName: "John".to_string(),
+        bsSecondName: "".to_string(),
+        bsThirdName: "".to_string(),
+        bsLastName1: "Doe".to_string(),
+        bsLastName2: "".to_string(),
+        bsLastName3: "".to_string(),
+        bsTel: "".to_string(),
+        bsMobile: "".to_string()
+    };
+    //let cycles_adjacents = core.cycles_adjacents();
+    //let data = serde_json::to_string(&cycles_adjacents).unwrap(); // TODO
+    cgi::text_response(200, "data")
+    //cgi::binary_response(200, "application/javascript", Vec::from(data.as_bytes()))
 })}
