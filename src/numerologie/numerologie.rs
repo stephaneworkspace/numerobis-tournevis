@@ -1,4 +1,5 @@
 use serde::{Serialize};
+use chrono::Datelike;
 
 /// NumerologieCore
 #[derive(Debug, Clone)]
@@ -20,12 +21,34 @@ impl NumerologieCore {
     pub fn calcul(&self) -> Calcul {
         Calcul {
             chemin_de_vie: self.chemin_de_vie(),
+            annee_personelle: self.annee_personelle(),
             cycles_adjacents: self.cycles_adjacents()
         }
     }
 
     fn chemin_de_vie(&self) -> Vec<i32> {
         NumerologieCore::reduction(self.year + self.month + self.day)
+    }
+
+    fn annee_personelle(&self) -> AnneePersonnelle {
+        let current_date = chrono::Utc::now().date_naive();
+        let annee = current_date.year();
+        let temp = annee + self.month + self.day;
+        let reduction = NumerologieCore::reduction(temp);
+        match reduction.last() {
+            Some(n) => {
+                AnneePersonnelle {
+                    annee,
+                    nombre: *n
+                }
+            },
+            None => {
+                AnneePersonnelle {
+                    annee,
+                    nombre: 0
+                }
+            }
+        }
     }
 
     fn cycles_adjacents(&self) -> Vec<CycleAdjacent> {
@@ -97,7 +120,14 @@ impl NumerologieCore {
 #[derive(Serialize)]
 pub struct Calcul {
     pub chemin_de_vie: Vec<i32>,
+    pub annee_personelle: AnneePersonnelle,
     pub cycles_adjacents: Vec<CycleAdjacent>
+}
+
+#[derive(Serialize)]
+pub struct AnneePersonnelle {
+    pub annee: i32,
+    pub nombre: i32,
 }
 
 
