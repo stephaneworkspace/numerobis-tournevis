@@ -63,7 +63,7 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
         tel: "".to_string(),
         mobile: "".to_string()
     };
-    let cycles_adjacents = core.cycles_adjacents();
-    let data = serde_json::to_string(&cycles_adjacents).unwrap(); // TODO
+    let calcul = core.calcul();
+    let data = serde_json::to_string(&calcul).unwrap(); // TODO
     cgi::binary_response(200, "application/javascript", Vec::from(data.as_bytes()))
 })}

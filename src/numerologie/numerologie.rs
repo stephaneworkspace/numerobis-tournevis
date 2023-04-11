@@ -17,7 +17,18 @@ pub struct NumerologieCore {
 }
 
 impl NumerologieCore {
-    pub fn cycles_adjacents(&self) -> Vec<CycleAdjacent> {
+    pub fn calcul(&self) -> Calcul {
+        Calcul {
+            chemin_de_vie: self.chemin_de_vie(),
+            cycles_adjacents: self.cycles_adjacents()
+        }
+    }
+
+    fn chemin_de_vie(&self) -> Vec<i32> {
+        NumerologieCore::reduction(self.year + self.month + self.day)
+    }
+
+    fn cycles_adjacents(&self) -> Vec<CycleAdjacent> {
         use CycleAdjacentType::*;
         let mut vec: Vec<CycleAdjacent> = Vec::new();
         let ca = NumerologieCore::cycle_adjacent(self, Formatif);
@@ -29,7 +40,7 @@ impl NumerologieCore {
         vec
     }
 
-    pub fn cycle_adjacent(&self, cycle_type: CycleAdjacentType) -> CycleAdjacent {
+    fn cycle_adjacent(&self, cycle_type: CycleAdjacentType) -> CycleAdjacent {
         use CycleAdjacentType::*;
         let calcul = match cycle_type {
             Formatif => {
@@ -82,6 +93,13 @@ impl NumerologieCore {
         return ai_res
     }
 }
+
+#[derive(Serialize)]
+pub struct Calcul {
+    pub chemin_de_vie: Vec<i32>,
+    pub cycles_adjacents: Vec<CycleAdjacent>
+}
+
 
 #[derive(Serialize)]
 pub struct CycleAdjacent {
