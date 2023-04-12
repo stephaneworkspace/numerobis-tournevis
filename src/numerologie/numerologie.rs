@@ -22,7 +22,8 @@ impl NumerologieCore {
         Calcul {
             chemin_de_vie: self.chemin_de_vie(),
             annee_personelle: self.annee_personelle(),
-            cycles_adjacents: self.cycles_adjacents()
+            cycles_adjacents: self.cycles_adjacents(),
+            cycles_realisations: self.cycles_realisations()
         }
     }
 
@@ -94,6 +95,215 @@ impl NumerologieCore {
         }
     }
 
+    fn cycles_realisations(&self) -> Vec<CycleRealisation> {
+        use CycleRealisationType::*;
+        let mut vec: Vec<CycleRealisation> = Vec::new();
+        let ca = NumerologieCore::cycle_realisation(self, JourPlusMois);
+        vec.push(ca);
+        let ca = NumerologieCore::cycle_realisation(self, JourPlusAnnee);
+        vec.push(ca);
+        let ca = NumerologieCore::cycle_realisation(self, UnPlusDeux);
+        vec.push(ca);
+        let ca = NumerologieCore::cycle_realisation(self, MoisPlusAnnee);
+        vec.push(ca);
+        vec
+    }
+
+    fn cycle_realisation(&self, cycle_type: CycleRealisationType) -> CycleRealisation {
+        use CycleRealisationType::*;
+        let calcul = match cycle_type {
+            JourPlusMois => {
+                self.day + self.month
+            },
+            JourPlusAnnee => {
+                self.day + self.year
+            },
+            UnPlusDeux => {
+                (self.day + self.month) + (self.day + self.year)
+            },
+            MoisPlusAnnee => {
+                self.month + self.year
+            }
+        };
+        let calcul_string = match cycle_type {
+            JourPlusMois => {
+                "Jour plus mois"
+            },
+            JourPlusAnnee => {
+                "Jour plus année"
+            },
+            UnPlusDeux => {
+                "Un plus deux"
+            },
+            MoisPlusAnnee => {
+                "Mois plus année"
+            }
+        };
+        let chemin_de_vie = NumerologieCore::reduction(self.day + self.month + self.year);
+        let age = match chemin_de_vie.last() {
+            Some(cdv) => {
+                match cdv {
+                    1 => {
+                        match &cycle_type {
+                            JourPlusMois => {
+                                "0 à 35 ans"
+                            }
+                            JourPlusAnnee => {
+                                "35 à 44 ans"
+                            }
+                            UnPlusDeux => {
+                                "44 à 53 ans"
+                            }
+                            MoisPlusAnnee => {
+                                "dès 54 ans"
+                            }
+                        }
+                    },
+                    2 => {
+                        match &cycle_type {
+                            JourPlusMois => {
+                                "0 à 34 ans"
+                            }
+                            JourPlusAnnee => {
+                                "34 à 43 ans"
+                            }
+                            UnPlusDeux => {
+                                "43 à 52 ans"
+                            }
+                            MoisPlusAnnee => {
+                                "dès 53 ans"
+                            }
+                        }
+                    },
+                    3 => {
+                        match &cycle_type {
+                            JourPlusMois => {
+                                "0 à 33 ans"
+                            }
+                            JourPlusAnnee => {
+                                "33 à 42 ans"
+                            }
+                            UnPlusDeux => {
+                                "42 à 51 ans"
+                            }
+                            MoisPlusAnnee => {
+                                "dès 52 ans"
+                            }
+                        }
+                    },
+                    4 => {
+                        match &cycle_type {
+                            JourPlusMois => {
+                                "0 à 32 ans"
+                            }
+                            JourPlusAnnee => {
+                                "32 à 41 ans"
+                            }
+                            UnPlusDeux => {
+                                "41 à 50 ans"
+                            }
+                            MoisPlusAnnee => {
+                                "dès 51 ans"
+                            }
+                        }
+                    },
+                    5 => {
+                        match &cycle_type {
+                            JourPlusMois => {
+                                "0 à 31 ans"
+                            }
+                            JourPlusAnnee => {
+                                "31 à 40 ans"
+                            }
+                            UnPlusDeux => {
+                                "40 à 49 ans"
+                            }
+                            MoisPlusAnnee => {
+                                "dès 50 ans"
+                            }
+                        }
+                    },
+                    6 => {
+                        match &cycle_type {
+                            JourPlusMois => {
+                                "0 à 30 ans"
+                            }
+                            JourPlusAnnee => {
+                                "30 à 39 ans"
+                            }
+                            UnPlusDeux => {
+                                "39 à 48 ans"
+                            }
+                            MoisPlusAnnee => {
+                                "dès 49 ans"
+                            }
+                        }
+                    },
+                    7 => {
+                        match &cycle_type {
+                            JourPlusMois => {
+                                "0 à 29 ans"
+                            }
+                            JourPlusAnnee => {
+                                "29 à 38 ans"
+                            }
+                            UnPlusDeux => {
+                                "38 à 47 ans"
+                            }
+                            MoisPlusAnnee => {
+                                "dès 48 ans"
+                            }
+                        }
+                    },
+                    8 => {
+                        match &cycle_type {
+                            JourPlusMois => {
+                                "0 à 28 ans"
+                            }
+                            JourPlusAnnee => {
+                                "28 à 37 ans"
+                            }
+                            UnPlusDeux => {
+                                "37 à 46 ans"
+                            }
+                            MoisPlusAnnee => {
+                                "dès 47 ans"
+                            }
+                        }
+                    },
+                    9 => {
+                        match &cycle_type {
+                            JourPlusMois => {
+                                "0 à 27 ans"
+                            }
+                            JourPlusAnnee => {
+                                "27 à 36 ans"
+                            }
+                            UnPlusDeux => {
+                                "36 à 45 ans"
+                            }
+                            MoisPlusAnnee => {
+                                "dès 46 ans"
+                            }
+                        }
+                    },
+                    _ => {
+                        "?"
+                    }
+                }
+            },
+            None => {
+                "?"
+            }
+        };
+        CycleRealisation {
+            cycle: cycle_type,
+            calcul: calcul_string.to_string(),
+            age: age.to_string(),
+            nombre: NumerologieCore::reduction(calcul)
+        }
+    }
+
     fn reduction(nombre: i32) -> Vec<i32> {
         let mut ai_res : Vec<i32> = Vec::new();
         let mut i_temp: i32 = nombre;
@@ -121,7 +331,8 @@ impl NumerologieCore {
 pub struct Calcul {
     pub chemin_de_vie: Vec<i32>,
     pub annee_personelle: AnneePersonnelle,
-    pub cycles_adjacents: Vec<CycleAdjacent>
+    pub cycles_adjacents: Vec<CycleAdjacent>,
+    pub cycles_realisations: Vec<CycleRealisation>
 }
 
 #[derive(Serialize)]
@@ -143,6 +354,22 @@ pub enum CycleAdjacentType {
     Formatif,
     Productif,
     Moisson
+}
+
+#[derive(Serialize)]
+pub struct CycleRealisation {
+    pub cycle: CycleRealisationType,
+    pub age: String,
+    pub calcul: String,
+    pub nombre: Vec<i32>
+}
+
+#[derive(Serialize)]
+pub enum CycleRealisationType {
+    JourPlusMois,
+    JourPlusAnnee,
+    UnPlusDeux,
+    MoisPlusAnnee,
 }
 
 pub enum Colonne {
