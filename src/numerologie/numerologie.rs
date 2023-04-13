@@ -23,7 +23,8 @@ impl NumerologieCore {
             chemin_de_vie: self.chemin_de_vie(),
             annee_personelle: self.annee_personelle(),
             cycles_adjacents: self.cycles_adjacents(),
-            cycles_realisations: self.cycles_realisations()
+            cycles_realisations: self.cycles_realisations(),
+            cycles_universels: self.cycles_universels()
         }
     }
 
@@ -304,6 +305,20 @@ impl NumerologieCore {
         }
     }
 
+    fn cycles_universels(&self) -> Vec<CycleUniversel> {
+        let mut vec: Vec<CycleUniversel> = Vec::new();
+        vec.push(CycleUniversel{ age: "0 à 9 ans".to_string(), nombre: 1 });
+        vec.push(CycleUniversel{ age: "10 à 18 ans".to_string(), nombre: 2 });
+        vec.push(CycleUniversel{ age: "19 à 27 ans".to_string(), nombre: 3 });
+        vec.push(CycleUniversel{ age: "28 à 36 ans".to_string(), nombre: 4 });
+        vec.push(CycleUniversel{ age: "37 à 45 ans".to_string(), nombre: 5 });
+        vec.push(CycleUniversel{ age: "46 à 54 ans".to_string(), nombre: 6 });
+        vec.push(CycleUniversel{ age: "55 à 63 ans".to_string(), nombre: 7 });
+        vec.push(CycleUniversel{ age: "64 à 72 ans".to_string(), nombre: 8 });
+        vec.push(CycleUniversel{ age: "73 à 81 ans".to_string(), nombre: 9 });
+        vec
+    }
+
     fn reduction(nombre: i32) -> Vec<i32> {
         let mut ai_res : Vec<i32> = Vec::new();
         let mut i_temp: i32 = nombre;
@@ -332,7 +347,8 @@ pub struct Calcul {
     pub chemin_de_vie: Vec<i32>,
     pub annee_personelle: AnneePersonnelle,
     pub cycles_adjacents: Vec<CycleAdjacent>,
-    pub cycles_realisations: Vec<CycleRealisation>
+    pub cycles_realisations: Vec<CycleRealisation>,
+    pub cycles_universels: Vec<CycleUniversel>,
 }
 
 #[derive(Serialize)]
@@ -370,6 +386,12 @@ pub enum CycleRealisationType {
     JourPlusAnnee,
     UnPlusDeux,
     MoisPlusAnnee,
+}
+
+#[derive(Serialize)]
+pub struct CycleUniversel {
+    pub age: String,
+    pub nombre: i32
 }
 
 pub enum Colonne {
