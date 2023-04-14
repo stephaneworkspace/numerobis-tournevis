@@ -356,10 +356,11 @@ impl NumerologieCore {
     }
 
     fn str_vers_nombre(str: &str) -> i32 {
-        let s = str.to_uppercase();
+        let mut s = str.to_uppercase();
+        s = diacritics::remove_diacritics(s.as_str());
         let mut nombre = 0;
         for c in s.chars() {
-            let n = NumerologieCore::lettre_simple(c);
+            let n = NumerologieCore::lettre_simple(c.to_ascii_uppercase());
             nombre += n;
         }
         nombre

@@ -37,12 +37,12 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
     let mut year = 1984;
     let mut month = 4;
     let mut day = 1;
-    let mut first_name = "John";
-    let mut second_name = "";
-    let mut third_name = "";
-    let mut last_name_1 = "Doe";
-    let mut last_name_2 = "";
-    let mut last_name_3 = "";
+    let mut first_name: String = "".to_string();
+    let mut second_name: String = "".to_string();
+    let mut third_name: String = "".to_string();
+    let mut last_name_1: String= "".to_string();
+    let mut last_name_2: String= "".to_string();
+    let mut last_name_3: String= "".to_string();
     for x in params.iter() {
         match x.0.as_str() {
         "year" => {
@@ -55,22 +55,28 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
             day = x.1.parse().unwrap_or(1);
         },
         "first_name" => {
-            first_name = x.1.as_str();
+            let s = &html_escape::decode_html_entities(&x.1);
+            first_name.push_str(&s);
         },
         "second_name" => {
-            second_name = x.1.as_str();
+            let s = &html_escape::decode_html_entities(&x.1);
+            second_name.push_str(&s);
         },
         "third_name" => {
-            third_name = x.1.as_str();
+            let s = &html_escape::decode_html_entities(&x.1);
+            third_name.push_str(&s);
         },
         "last_name_1" => {
-            last_name_1 = x.1.as_str();
+            let s = &html_escape::decode_html_entities(&x.1);
+            last_name_1.push_str(&s);
         },
         "last_name_2" => {
-            last_name_2 = x.1.as_str();
+            let s = &html_escape::decode_html_entities(&x.1);
+            last_name_2.push_str(&s);
         },
         "last_name_3" => {
-            last_name_3 = x.1.as_str();
+            let s = &html_escape::decode_html_entities(&x.1);
+            last_name_3.push_str(&s);
         },
         _ => {}
        }
