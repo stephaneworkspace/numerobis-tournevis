@@ -37,29 +37,54 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
     let mut year = 1984;
     let mut month = 4;
     let mut day = 1;
+    let mut first_name = "John";
+    let mut second_name = "";
+    let mut third_name = "";
+    let mut last_name_1 = "Doe";
+    let mut last_name_2 = "";
+    let mut last_name_3 = "";
     for x in params.iter() {
         match x.0.as_str() {
-           "year" => {
-               year = x.1.parse().unwrap_or(1984);
-           }
-           "month" => {
-               month = x.1.parse().unwrap_or(4);
-           }
-           "day" => {
-               day = x.1.parse().unwrap_or(1);
-           }, _ => {}
+        "year" => {
+           year = x.1.parse().unwrap_or(1984);
+        }
+        "month" => {
+           month = x.1.parse().unwrap_or(4);
+        },
+        "day" => {
+            day = x.1.parse().unwrap_or(1);
+        },
+        "first_name" => {
+            first_name = x.1.as_str();
+        },
+        "second_name" => {
+            second_name = x.1.as_str();
+        },
+        "third_name" => {
+            third_name = x.1.as_str();
+        },
+        "last_name_1" => {
+            last_name_1 = x.1.as_str();
+        },
+        "last_name_2" => {
+            last_name_2 = x.1.as_str();
+        },
+        "last_name_3" => {
+            last_name_3 = x.1.as_str();
+        },
+        _ => {}
        }
     }
     let core = NumerologieCore {
         year,
         month,
         day,
-        first_name: "John".to_string(),
-        second_name: "".to_string(),
-        third_name: "".to_string(),
-        last_name_1: "Doe".to_string(),
-        last_name_2: "".to_string(),
-        last_name_3: "".to_string(),
+        first_name: first_name.to_string(),
+        second_name: second_name.to_string(),
+        third_name: third_name.to_string(),
+        last_name_1: last_name_1.to_string(),
+        last_name_2: last_name_2.to_string(),
+        last_name_3: last_name_3.to_string(),
         tel: "".to_string(),
         mobile: "".to_string()
     };

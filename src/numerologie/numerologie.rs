@@ -24,7 +24,21 @@ impl NumerologieCore {
             annee_personelle: self.annee_personelle(),
             cycles_adjacents: self.cycles_adjacents(),
             cycles_realisations: self.cycles_realisations(),
-            cycles_universels: self.cycles_universels()
+            cycles_universels: self.cycles_universels(),
+            personalite_juridique: PersonaliteJuridique {
+                first_name: self.first_name.clone(),
+                first_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.first_name.as_str())),
+                second_name: self.second_name.clone(),
+                second_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.second_name.as_str())),
+                third_name: self.third_name.clone(),
+                third_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.third_name.as_str())),
+                last_name_1: self.last_name_1.clone(),
+                last_name_1_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_1.as_str())),
+                last_name_2: self.last_name_2.clone(),
+                last_name_2_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_2.as_str())),
+                last_name_3: self.last_name_3.clone(),
+                last_name_3_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_3.as_str()))
+            }
         }
     }
 
@@ -340,6 +354,277 @@ impl NumerologieCore {
         }
         return ai_res
     }
+
+    fn str_vers_nombre(str: &str) -> i32 {
+        let s = str.to_uppercase();
+        let mut nombre = 0;
+        for c in s.chars() {
+            let n = NumerologieCore::lettre_simple(c);
+            nombre += n;
+        }
+        nombre
+    }
+
+    fn lettre_simple(c: char) -> i32 {
+        match c {
+            'A' =>
+                1,
+            'À' =>
+                1,
+            'Á' =>
+                1,
+            'Â' =>
+                1,
+            'Ã' =>
+                1,
+            'B' =>
+                2,
+            'C' =>
+                3,
+            'D' =>
+                4,
+            'E' =>
+                5,
+            'È' =>
+                5,
+            'É' =>
+                5,
+            'Ê' =>
+                5,
+            'Ë' =>
+                5,
+            'F' =>
+                6,
+            'G' =>
+                7,
+            'H' =>
+                8,
+            'I' =>
+                9,
+            'Í' =>
+                9,
+            'Ì' =>
+                9,
+            'Î' =>
+                9,
+            'Ï' =>
+                9,
+            'J' =>
+                10,
+            'K' =>
+                11,
+            'L' =>
+                12,
+            'M' =>
+                13,
+            'N' =>
+                14,
+            'Ñ' =>
+                14,
+            'O' =>
+                15,
+            'Ó' =>
+                15,
+            'Ò' =>
+                15,
+            'Ô' =>
+                15,
+            'Ö' =>
+                15,
+            'Ø' =>
+                15,
+            'Õ' =>
+                15,
+            'P' =>
+                16,
+            'Q' =>
+                17,
+            'R' =>
+                18,
+            'S' =>
+                19,
+            'T' =>
+                20,
+            'U' =>
+                21,
+            'Ú' =>
+                21,
+            'Ù' =>
+                21,
+            'Û' =>
+                21,
+            'Ü' =>
+                21,
+            'V' =>
+                22,
+            'W' =>
+                23,
+            'X' =>
+                24,
+            'Y' =>
+                25,
+            'Ý' =>
+                25,
+            'Z' =>
+                26 ,
+            '0' =>
+                0,
+            '1' =>
+                1,
+            '2' =>
+                2,
+            '3' =>
+                3,
+            '4' =>
+                4,
+            '5' =>
+                5,
+            '6' =>
+                6,
+            '7' =>
+                7,
+            '8' =>
+                8,
+            '9' =>
+                9,
+            _ =>
+                0
+        }
+    }
+
+    fn lettre_colonne(c: char) -> (i32, Colonne) {
+        let colonne: Colonne = NumerologieCore::colonne(c.clone());
+        let nombre: i32 = NumerologieCore::lettre_simple(c);
+        (nombre, colonne)
+    }
+
+    fn colonne(c: char) -> Colonne {
+        use Colonne::*;
+        match c {
+            'A' =>
+                Droite,
+            'À' =>
+                Droite,
+            'Á' =>
+                Droite,
+            'Â' =>
+                Droite,
+            'Ã' =>
+                Droite,
+            'B' =>
+                Gauche,
+            'C' =>
+                Gauche,
+            'D' =>
+                Gauche,
+            'E' =>
+                Droite,
+            'È' =>
+                Droite,
+            'É' =>
+                Droite,
+            'Ê' =>
+                Droite,
+            'Ë' =>
+                Droite,
+            'F' =>
+                Gauche,
+            'G' =>
+                Gauche,
+            'H' =>
+                Gauche,
+            'I' =>
+                Droite,
+            'Í' =>
+                Droite,
+            'Ì' =>
+                Droite,
+            'Î' =>
+                Droite,
+            'Ï' =>
+                Droite,
+            'J' =>
+                Gauche,
+            'K' =>
+                Gauche,
+            'L' =>
+                Gauche,
+            'M' =>
+                Gauche,
+            'N' =>
+                Gauche,
+            'Ñ' =>
+                Gauche,
+            'O' =>
+                Droite,
+            'Ó' =>
+                Droite,
+            'Ò' =>
+                Droite,
+            'Ô' =>
+                Droite,
+            'Ö' =>
+                Droite,
+            'Ø' =>
+                Droite,
+            'Õ' =>
+                Droite,
+            'P' =>
+                Gauche,
+            'Q' =>
+                Gauche,
+            'R' =>
+                Gauche,
+            'S' =>
+                Gauche,
+            'T' =>
+                Gauche,
+            'U' =>
+                Droite,
+            'Ú' =>
+                Droite,
+            'Ù' =>
+                Droite,
+            'Û' =>
+                Droite,
+            'Ü' =>
+                Droite,
+            'V' =>
+                Gauche,
+            'W' =>
+                Gauche,
+            'X' =>
+                Gauche,
+            'Y' =>
+                Droite,
+            'Ý' =>
+                Droite,
+            'Z' =>
+                Gauche,
+            '0' =>
+                Rien,
+            '1' =>
+                Nombre,
+            '2' =>
+                Nombre,
+            '3' =>
+                Nombre,
+            '4' =>
+                Nombre,
+            '5' =>
+                Nombre,
+            '6' =>
+                Nombre,
+            '7' =>
+                Nombre,
+            '8' =>
+                Nombre,
+            '9' =>
+                Nombre,
+            _ =>
+                Rien,
+        }
+    }
 }
 
 #[derive(Serialize)]
@@ -349,6 +634,7 @@ pub struct Calcul {
     pub cycles_adjacents: Vec<CycleAdjacent>,
     pub cycles_realisations: Vec<CycleRealisation>,
     pub cycles_universels: Vec<CycleUniversel>,
+    pub personalite_juridique: PersonaliteJuridique,
 }
 
 #[derive(Serialize)]
@@ -394,281 +680,26 @@ pub struct CycleUniversel {
     pub nombre: i32
 }
 
+#[derive(Serialize)]
+pub struct PersonaliteJuridique {
+    pub first_name: String,
+    pub first_name_nombre: Vec<i32>,
+    pub second_name: String,
+    pub second_name_nombre: Vec<i32>,
+    pub third_name: String,
+    pub third_name_nombre: Vec<i32>,
+    pub last_name_1: String,
+    pub last_name_1_nombre: Vec<i32>,
+    pub last_name_2: String,
+    pub last_name_2_nombre: Vec<i32>,
+    pub last_name_3: String,
+    pub last_name_3_nombre: Vec<i32>,
+}
+
+
 pub enum Colonne {
     Gauche,
     Droite,
     Nombre,
     Rien,
-}
-
-pub fn colonne(lettre: &str) -> Colonne {
-    use Colonne::*;
-    let l: &str = &lettre.to_uppercase();
-    match l {
-        "A" =>
-            Droite,
-        "À" =>
-            Droite,
-        "Á" =>
-            Droite,
-        "Â" =>
-            Droite,
-        "Ã" =>
-            Droite,
-        "B" =>
-            Gauche,
-        "C" =>
-            Gauche,
-        "D" =>
-            Gauche,
-        "E" =>
-            Droite,
-        "È" =>
-            Droite,
-        "É" =>
-            Droite,
-        "Ê" =>
-            Droite,
-        "Ë" =>
-            Droite,
-        "F" =>
-            Gauche,
-        "G" =>
-            Gauche,
-        "H" =>
-            Gauche,
-        "I" =>
-            Droite,
-        "Í" =>
-            Droite,
-        "Ì" =>
-            Droite,
-        "Î" =>
-            Droite,
-        "Ï" =>
-            Droite,
-        "J" =>
-            Gauche,
-        "K" =>
-            Gauche,
-        "L" =>
-            Gauche,
-        "M" =>
-            Gauche,
-        "N" =>
-            Gauche,
-        "Ñ" =>
-            Gauche,
-        "O" =>
-            Droite,
-        "Ó" =>
-            Droite,
-        "Ò" =>
-            Droite,
-        "Ô" =>
-            Droite,
-        "Ö" =>
-            Droite,
-        "Ø" =>
-            Droite,
-        "Õ" =>
-            Droite,
-        "P" =>
-            Gauche,
-        "Q" =>
-            Gauche,
-        "R" =>
-            Gauche,
-        "S" =>
-            Gauche,
-        "T" =>
-            Gauche,
-        "U" =>
-            Droite,
-        "Ú" =>
-            Droite,
-        "Ù" =>
-            Droite,
-        "Û" =>
-            Droite,
-        "Ü" =>
-            Droite,
-        "V" =>
-            Gauche,
-        "W" =>
-            Gauche,
-        "X" =>
-            Gauche,
-        "Y" =>
-            Droite,
-        "Ý" =>
-            Droite,
-        "Z" =>
-            Gauche,
-        "0" =>
-            Rien,
-        "1" =>
-            Nombre,
-        "2" =>
-            Nombre,
-        "3" =>
-            Nombre,
-        "4" =>
-            Nombre,
-        "5" =>
-            Nombre,
-        "6" =>
-            Nombre,
-        "7" =>
-            Nombre,
-        "8" =>
-            Nombre,
-        "9" =>
-            Nombre,
-        _ =>
-            Rien,
-    }
-}
-
-pub fn lettre_simple(lettre: &str) -> i32 {
-    let l: &str = &lettre.to_uppercase();
-    match l {
-        "A" =>
-            1,
-        "À" =>
-            1,
-        "Á" =>
-            1,
-        "Â" =>
-            1,
-        "Ã" =>
-            1,
-        "B" =>
-            2,
-        "C" =>
-            3,
-        "D" =>
-            4,
-        "E" =>
-            5,
-        "È" =>
-            5,
-        "É" =>
-            5,
-        "Ê" =>
-            5,
-        "Ë" =>
-            5,
-        "F" =>
-            6,
-        "G" =>
-            7,
-        "H" =>
-            8,
-        "I" =>
-            9,
-        "Í" =>
-            9,
-        "Ì" =>
-            9,
-        "Î" =>
-            9,
-        "Ï" =>
-            9,
-        "J" =>
-            10,
-        "K" =>
-            11,
-        "L" =>
-            12,
-        "M" =>
-            13,
-        "N" =>
-            14,
-        "Ñ" =>
-            14,
-        "O" =>
-            15,
-        "Ó" =>
-            15,
-        "Ò" =>
-            15,
-        "Ô" =>
-            15,
-        "Ö" =>
-            15,
-        "Ø" =>
-            15,
-        "Õ" =>
-            15,
-        "P" =>
-            16,
-        "Q" =>
-            17,
-        "R" =>
-            18,
-        "S" =>
-            19,
-        "T" =>
-            20,
-        "U" =>
-            21,
-        "Ú" =>
-            21,
-        "Ù" =>
-            21,
-        "Û" =>
-            21,
-        "Ü" =>
-            21,
-        "V" =>
-            22,
-        "W" =>
-            23,
-        "X" =>
-            24,
-        "Y" =>
-            25,
-        "Ý" =>
-            25,
-        "Z" =>
-            26 ,
-        "0" =>
-            0,
-        "1" =>
-            1,
-        "2" =>
-            2,
-        "3" =>
-            3,
-        "4" =>
-            4,
-        "5" =>
-            5,
-        "6" =>
-            6,
-        "7" =>
-            7,
-        "8" =>
-            8,
-        "9" =>
-            9,
-        _ =>
-            0
-    }
-}
-
-pub fn lettre_colonne(lettre: &str) -> (i32, Colonne) {
-    let colonne: Colonne = colonne(&lettre);
-    let nombre: i32 = lettre_simple(&lettre);
-    (nombre, colonne)
-}
-
-pub fn str_vers_nombre(str: &str) -> i32 {
-    let mut nombre = 0;
-    for s in str.split_whitespace() {
-        let n = lettre_simple(s);
-        nombre += n;
-    }
-    nombre
 }
