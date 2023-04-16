@@ -32,12 +32,16 @@ impl NumerologieCore {
                 second_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.second_name.as_str())),
                 third_name: self.third_name.clone(),
                 third_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.third_name.as_str())),
+                all_first_name: format!("{} {} {}", self.first_name.clone(), self.second_name.clone(), self.third_name.clone()),
+                all_first_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(&format!("{} {} {}", self.first_name.clone(), self.second_name.clone(), self.third_name.clone()).to_string())),
                 last_name_1: self.last_name_1.clone(),
                 last_name_1_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_1.as_str())),
                 last_name_2: self.last_name_2.clone(),
                 last_name_2_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_2.as_str())),
                 last_name_3: self.last_name_3.clone(),
-                last_name_3_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_3.as_str()))
+                last_name_3_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_3.as_str())),
+                all_last_name: format!("{} {} {}", self.last_name_1.clone(), self.last_name_2.clone(), self.last_name_3.clone()),
+                all_last_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(&format!("{} {} {}", self.last_name_1.clone(), self.last_name_2.clone(), self.last_name_3.clone()).to_string())),
             },
             tel: Tel {
                 tel: self.tel.clone(),
@@ -696,12 +700,16 @@ pub struct PersonaliteJuridique {
     pub second_name_nombre: Vec<i32>,
     pub third_name: String,
     pub third_name_nombre: Vec<i32>,
+    pub all_first_name: String,
+    pub all_first_name_nombre: Vec<i32>,
     pub last_name_1: String,
     pub last_name_1_nombre: Vec<i32>,
     pub last_name_2: String,
     pub last_name_2_nombre: Vec<i32>,
     pub last_name_3: String,
     pub last_name_3_nombre: Vec<i32>,
+    pub all_last_name: String,
+    pub all_last_name_nombre: Vec<i32>,
 }
 
 #[derive(Serialize)]
