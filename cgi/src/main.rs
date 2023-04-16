@@ -43,6 +43,8 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
     let mut last_name_1: String= "".to_string();
     let mut last_name_2: String= "".to_string();
     let mut last_name_3: String= "".to_string();
+    let mut tel: String= "".to_string();
+    let mut mobile: String= "".to_string();
     for x in params.iter() {
         match x.0.as_str() {
         "year" => {
@@ -77,6 +79,14 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
         "last_name_3" => {
             let s = &html_escape::decode_html_entities(&x.1);
             last_name_3.push_str(&s);
+        },
+        "tel" => {
+            let s = &html_escape::decode_html_entities(&x.1);
+            tel.push_str(&s);
+        },
+        "mobile" => {
+            let s = &html_escape::decode_html_entities(&x.1);
+            mobile.push_str(&s);
         },
         _ => {}
        }

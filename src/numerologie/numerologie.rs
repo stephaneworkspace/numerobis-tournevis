@@ -38,6 +38,12 @@ impl NumerologieCore {
                 last_name_2_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_2.as_str())),
                 last_name_3: self.last_name_3.clone(),
                 last_name_3_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_3.as_str()))
+            },
+            tel: Tel {
+                tel: self.tel.clone(),
+                tel_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.tel.as_str())),
+                mobile: self.mobile.clone(),
+                mobile_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.mobile.as_str())),
             }
         }
     }
@@ -636,6 +642,7 @@ pub struct Calcul {
     pub cycles_realisations: Vec<CycleRealisation>,
     pub cycles_universels: Vec<CycleUniversel>,
     pub personalite_juridique: PersonaliteJuridique,
+    pub tel: Tel,
 }
 
 #[derive(Serialize)]
@@ -697,6 +704,13 @@ pub struct PersonaliteJuridique {
     pub last_name_3_nombre: Vec<i32>,
 }
 
+#[derive(Serialize)]
+pub struct Tel {
+    pub tel: String,
+    pub tel_nombre: Vec<i32>,
+    pub mobile: String,
+    pub mobile_nombre: Vec<i32>,
+}
 
 pub enum Colonne {
     Gauche,
