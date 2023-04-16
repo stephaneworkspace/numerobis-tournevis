@@ -41,6 +41,28 @@ impl NumerologieCore {
             sw1: droite.3,
             sw2: droite.4
         });
+        let mut all_last_name_colonnes: Vec<ColonneDetail> = Vec::new();
+        let last_name = format!("{} {} {}", self.last_name_1.clone(), self.last_name_2.clone(), self.last_name_3.clone());
+        let gauche = NumerologieCore::str_vers_colonne(last_name.as_str(), Colonne::Gauche);
+        let droite = NumerologieCore::str_vers_colonne(last_name.as_str(), Colonne::Droite);
+        all_last_name_colonnes.push(ColonneDetail{
+            nom: name.clone(),
+            colonne: Colonne::Gauche,
+            nombre: gauche.0,
+            total: gauche.1,
+            total_reduit: gauche.2,
+            sw1: gauche.3,
+            sw2: gauche.4
+        });
+        all_last_name_colonnes.push(ColonneDetail{
+            nom: name.clone(),
+            colonne: Colonne::Droite,
+            nombre: droite.0,
+            total: droite.1,
+            total_reduit: droite.2,
+            sw1: droite.3,
+            sw2: droite.4
+        });
         Calcul {
             chemin_de_vie: self.chemin_de_vie(),
             annee_personelle: self.annee_personelle(),
@@ -65,6 +87,7 @@ impl NumerologieCore {
                 last_name_3_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_3.as_str())),
                 all_last_name: format!("{} {} {}", self.last_name_1.clone(), self.last_name_2.clone(), self.last_name_3.clone()),
                 all_last_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(&format!("{} {} {}", self.last_name_1.clone(), self.last_name_2.clone(), self.last_name_3.clone()).to_string())),
+                all_last_name_colonnes: all_last_name_colonnes.into(),
             },
             tel: Tel {
                 tel: self.tel.clone(),
@@ -767,6 +790,7 @@ pub struct PersonaliteJuridique {
     pub last_name_3_nombre: Vec<i32>,
     pub all_last_name: String,
     pub all_last_name_nombre: Vec<i32>,
+    pub all_last_name_colonnes: Vec<ColonneDetail>,
 }
 
 #[derive(Serialize)]
