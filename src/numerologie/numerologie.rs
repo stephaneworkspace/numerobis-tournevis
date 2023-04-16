@@ -1,4 +1,4 @@
-use serde::{Serialize};
+use serde::Serialize;
 use chrono::Datelike;
 
 /// NumerologieCore
@@ -19,6 +19,28 @@ pub struct NumerologieCore {
 
 impl NumerologieCore {
     pub fn calcul(&self) -> Calcul {
+        let mut all_first_name_colonnes: Vec<ColonneDetail> = Vec::new();
+        let name = format!("{} {} {}", self.first_name.clone(), self.second_name.clone(), self.third_name.clone());
+        let gauche = NumerologieCore::str_vers_colonne(name.as_str(), Colonne::Gauche);
+        let droite = NumerologieCore::str_vers_colonne(name.as_str(), Colonne::Droite);
+        all_first_name_colonnes.push(ColonneDetail{
+            nom: name.clone(),
+            colonne: Colonne::Gauche,
+            nombre: gauche.0,
+            total: gauche.1,
+            total_reduit: gauche.2,
+            sw1: gauche.3,
+            sw2: gauche.4
+        });
+        all_first_name_colonnes.push(ColonneDetail{
+            nom: name.clone(),
+            colonne: Colonne::Droite,
+            nombre: droite.0,
+            total: droite.1,
+            total_reduit: droite.2,
+            sw1: droite.3,
+            sw2: droite.4
+        });
         Calcul {
             chemin_de_vie: self.chemin_de_vie(),
             annee_personelle: self.annee_personelle(),
@@ -34,6 +56,7 @@ impl NumerologieCore {
                 third_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.third_name.as_str())),
                 all_first_name: format!("{} {} {}", self.first_name.clone(), self.second_name.clone(), self.third_name.clone()),
                 all_first_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(&format!("{} {} {}", self.first_name.clone(), self.second_name.clone(), self.third_name.clone()).to_string())),
+                all_first_name_colonnes: all_first_name_colonnes.into(),
                 last_name_1: self.last_name_1.clone(),
                 last_name_1_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_1.as_str())),
                 last_name_2: self.last_name_2.clone(),
@@ -376,6 +399,39 @@ impl NumerologieCore {
         nombre
     }
 
+    fn str_vers_colonne(str: &str, colonne: Colonne) -> (Vec<(i32,i32)>, i32, i32, bool, bool) {
+        let mut vec_result: Vec<(i32,i32)> = Vec::new();
+        let mut s = str.to_uppercase();
+        s = diacritics::remove_diacritics(s.as_str());
+        let mut nombre = 0;
+        let mut nombre_reduit = 0;
+        let mut sw_1 = false;
+        let mut sw_2 = false;
+        for c in s.chars() {
+            let (n, col) = NumerologieCore::lettre_colonne(c.to_ascii_uppercase());
+            if col == colonne {
+                vec_result.push((n, *NumerologieCore::reduction(n).last().unwrap_or(&0)));
+                nombre += n;
+                nombre_reduit += *NumerologieCore::reduction(n).last().unwrap_or(&0);
+            }
+        }
+        if nombre < 10 {
+            for x in vec_result.as_slice() {
+                if x.1 == nombre {
+                    sw_1 = true;
+                    break;
+                }
+            }
+        }
+        for x in vec_result.as_slice() {
+            if x.1 == nombre_reduit {
+                sw_2 = true;
+                break;
+            }
+        }
+        (vec_result.into(), nombre, nombre_reduit, sw_1, sw_2)
+    }
+
     fn lettre_simple(c: char) -> i32 {
         match c {
             'A' =>
@@ -702,6 +758,7 @@ pub struct PersonaliteJuridique {
     pub third_name_nombre: Vec<i32>,
     pub all_first_name: String,
     pub all_first_name_nombre: Vec<i32>,
+    pub all_first_name_colonnes: Vec<ColonneDetail>,
     pub last_name_1: String,
     pub last_name_1_nombre: Vec<i32>,
     pub last_name_2: String,
@@ -720,9 +777,21 @@ pub struct Tel {
     pub mobile_nombre: Vec<i32>,
 }
 
+#[derive(Serialize, PartialEq)]
 pub enum Colonne {
     Gauche,
     Droite,
     Nombre,
     Rien,
+}
+
+#[derive(Serialize)]
+pub struct ColonneDetail {
+    pub nom: String,
+    pub colonne: Colonne,
+    pub nombre: Vec<(i32, i32)>,
+    pub total: i32,
+    pub total_reduit: i32,
+    pub sw1: bool,
+    pub sw2: bool
 }
