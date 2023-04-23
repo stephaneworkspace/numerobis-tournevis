@@ -70,21 +70,29 @@ impl NumerologieCore {
             cycles_realisations: self.cycles_realisations(),
             cycles_universels: self.cycles_universels(),
             personalite_juridique: PersonaliteJuridique {
+                carre_algo: NumerologieCore::carre_magique_algo(),
+                personalite_juridique_carre: NumerologieCore::carre_magique(&format!("{} {} {} {} {} {}", self.first_name.clone(), self.second_name.clone(), self.third_name.clone(), self.last_name_1.clone(), self.last_name_2.clone(), self.last_name_3.clone()).to_string()),
                 first_name: self.first_name.clone(),
                 first_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.first_name.as_str())),
+                first_name_carre: NumerologieCore::carre_magique(&self.first_name.clone()),
                 second_name: self.second_name.clone(),
                 second_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.second_name.as_str())),
+                second_name_carre: NumerologieCore::carre_magique(&self.second_name.clone()),
                 third_name: self.third_name.clone(),
                 third_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.third_name.as_str())),
+                third_name_carre: NumerologieCore::carre_magique(&self.third_name.clone()),
                 all_first_name: format!("{} {} {}", self.first_name.clone(), self.second_name.clone(), self.third_name.clone()),
                 all_first_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(&format!("{} {} {}", self.first_name.clone(), self.second_name.clone(), self.third_name.clone()).to_string())),
                 all_first_name_colonnes: all_first_name_colonnes.into(),
                 last_name_1: self.last_name_1.clone(),
                 last_name_1_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_1.as_str())),
+                last_name_1_carre: NumerologieCore::carre_magique(&self.last_name_1.clone()),
                 last_name_2: self.last_name_2.clone(),
                 last_name_2_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_2.as_str())),
+                last_name_2_carre: NumerologieCore::carre_magique(&self.last_name_2.clone()),
                 last_name_3: self.last_name_3.clone(),
                 last_name_3_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.last_name_3.as_str())),
+                last_name_3_carre: NumerologieCore::carre_magique(&self.last_name_3.clone()),
                 all_last_name: format!("{} {} {}", self.last_name_1.clone(), self.last_name_2.clone(), self.last_name_3.clone()),
                 all_last_name_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(&format!("{} {} {}", self.last_name_1.clone(), self.last_name_2.clone(), self.last_name_3.clone()).to_string())),
                 all_last_name_colonnes: all_last_name_colonnes.into(),
@@ -92,8 +100,10 @@ impl NumerologieCore {
             tel: Tel {
                 tel: self.tel.clone(),
                 tel_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.tel.as_str())),
+                tel_carre: NumerologieCore::carre_magique(&self.tel.clone()),
                 mobile: self.mobile.clone(),
                 mobile_nombre: NumerologieCore::reduction(NumerologieCore::str_vers_nombre(self.mobile.as_str())),
+                mobile_carre: NumerologieCore::carre_magique(&self.mobile.clone()),
             }
         }
     }
@@ -715,6 +725,210 @@ impl NumerologieCore {
                 Rien,
         }
     }
+
+    fn carre_magique_algo() -> Vec<Vec<i32>> {
+        let mut array_0: [i32; 3] = [0; 3];
+        let mut array_1: [i32; 3] = [0; 3];
+        let mut array_2: [i32; 3] = [0; 3];
+        array_0[0] = 8;
+        array_0[1] = 1;
+        array_0[2] = 6;
+        array_1[0] = 3;
+        array_1[1] = 5;
+        array_1[2] = 7;
+        array_2[0] = 4;
+        array_2[1] = 9;
+        array_2[2] = 2;
+        let mut carre: Vec<Vec<i32>> = Vec::new();
+        carre.push(array_0.to_vec());
+        carre.push(array_1.to_vec());
+        carre.push(array_2.to_vec());
+        carre
+    }
+
+    fn carre_magique(str: &str) -> Equilibre {
+        let mut gauche: Vec<(i32, i32)> = Vec::new();
+        let mut droite: Vec<(i32, i32)> = Vec::new();
+        let mut nomb: Vec<(i32, i32)> = Vec::new();
+        for c in str.chars() {
+            let (n, col) = NumerologieCore::lettre_colonne(c.to_ascii_uppercase());
+            if n > 0 {
+                let nombre_non_reduit = n;
+                let nombre_reduit = NumerologieCore::reduction(nombre_non_reduit);
+                let last = nombre_reduit.last().unwrap_or(&nombre_non_reduit);
+                match col {
+                    Colonne::Droite => {
+                        droite.push((nombre_non_reduit, *last));
+                    },
+                    Colonne::Gauche => {
+                        gauche.push((nombre_non_reduit, *last));
+                    },
+                    Colonne::Nombre => {
+                        nomb.push((nombre_non_reduit, *last));
+                    },
+                    _ => {
+
+                    }
+                }
+            }
+        }
+        /*
+        let mut _total = 0;
+        for d in droite.iter() {
+            _total += d.0;
+        }
+        for g in gauche.iter() {
+            _total += g.0;
+        }
+        */
+        let mut arr_cm: Vec<i32> = Vec::new();
+        for d in droite.iter() {
+            let mut sw_trouve = false;
+            for n in arr_cm.iter() {
+                if d.1 == *n {
+                    sw_trouve = true;
+                    break;
+                }
+            }
+            if !sw_trouve {
+                arr_cm.push(d.1)
+            }
+        }
+        for g in gauche.iter() {
+            let mut sw_trouve = false;
+            for n in arr_cm.iter() {
+                if g.1 == *n {
+                    sw_trouve = true;
+                    break;
+                }
+            }
+            if !sw_trouve {
+                arr_cm.push(g.1)
+            }
+        }
+        // nomb pour les numéro de téléphone
+        for no in nomb.iter() {
+            let mut sw_trouve = false;
+            for n in arr_cm.iter() {
+                if no.1 == *n {
+                    sw_trouve = true;
+                    break;
+                }
+            }
+            if !sw_trouve {
+                arr_cm.push(no.1)
+            }
+        }
+        let mut array_0: [i32; 3] = [0; 3];
+        let mut array_1: [i32; 3] = [0; 3];
+        let mut array_2: [i32; 3] = [0; 3];
+        for d in droite.iter() {
+            match d.1 {
+                1 => {
+                    array_0[0] = array_0[0] + 1;
+                },
+                2 => {
+                    array_0[1] = array_0[1] + 1;
+                },
+                3 => {
+                    array_0[2] = array_0[2] + 1;
+                },
+                4 => {
+                    array_1[0] = array_1[0] + 1;
+                },
+                5 => {
+                    array_1[1] = array_1[1] + 1;
+                },
+                6 => {
+                    array_1[2] = array_1[2] + 1;
+                },
+                7 => {
+                    array_2[0] = array_2[0] + 1;
+                },
+                8 => {
+                    array_2[1] = array_2[1] + 1;
+                },
+                9 => {
+                    array_2[2] = array_2[2] + 1;
+                },
+                _ => {
+                }
+            }
+        }
+        for g in gauche.iter() {
+            match g.1 {
+                1 => {
+                    array_0[0] = array_0[0] + 1;
+                },
+                2 => {
+                    array_0[1] = array_0[1] + 1;
+                },
+                3 => {
+                    array_0[2] = array_0[2] + 1;
+                },
+                4 => {
+                    array_1[0] = array_1[0] + 1;
+                },
+                5 => {
+                    array_1[1] = array_1[1] + 1;
+                },
+                6 => {
+                    array_1[2] = array_1[2] + 1;
+                },
+                7 => {
+                    array_2[0] = array_2[0] + 1;
+                },
+                8 => {
+                    array_2[1] = array_2[1] + 1;
+                },
+                9 => {
+                    array_2[2] = array_2[2] + 1;
+                },
+                _ => {
+
+                }
+            }
+        }
+        for n in nomb.iter() {
+            match n.1 {
+                1 => {
+                    array_0[0] = array_0[0] + 1;
+                },
+                2 => {
+                    array_0[1] = array_0[1] + 1;
+                },
+                3 => {
+                    array_0[2] = array_0[2] + 1;
+                },
+                4 => {
+                    array_1[0] = array_1[0] + 1;
+                },
+                5 => {
+                    array_1[1] = array_1[1] + 1;
+                },
+                6 => {
+                    array_1[2] = array_1[2] + 1;
+                },
+                7 => {
+                    array_2[0] = array_2[0] + 1;
+                },
+                8 => {
+                    array_2[1] = array_2[1] + 1;
+                },
+                9 => {
+                    array_2[2] = array_2[2] + 1;
+                },
+                _ => {
+
+                }
+            }
+        }
+        let mut carre: Vec<Vec<i32>> = Vec::new();
+        carre.push(array_0.to_vec());
+        carre.push(array_1.to_vec());
+        carre.push(array_2.to_vec());
+        Equilibre { carre, nom: "".to_string() }
+    }
 }
 
 #[derive(Serialize)]
@@ -773,21 +987,29 @@ pub struct CycleUniversel {
 
 #[derive(Serialize)]
 pub struct PersonaliteJuridique {
+    pub carre_algo: Vec<Vec<i32>>,
+    pub personalite_juridique_carre: Equilibre,
     pub first_name: String,
     pub first_name_nombre: Vec<i32>,
+    pub first_name_carre: Equilibre,
     pub second_name: String,
     pub second_name_nombre: Vec<i32>,
+    pub second_name_carre: Equilibre,
     pub third_name: String,
     pub third_name_nombre: Vec<i32>,
+    pub third_name_carre: Equilibre,
     pub all_first_name: String,
     pub all_first_name_nombre: Vec<i32>,
     pub all_first_name_colonnes: Vec<ColonneDetail>,
     pub last_name_1: String,
     pub last_name_1_nombre: Vec<i32>,
+    pub last_name_1_carre: Equilibre,
     pub last_name_2: String,
     pub last_name_2_nombre: Vec<i32>,
+    pub last_name_2_carre: Equilibre,
     pub last_name_3: String,
     pub last_name_3_nombre: Vec<i32>,
+    pub last_name_3_carre: Equilibre,
     pub all_last_name: String,
     pub all_last_name_nombre: Vec<i32>,
     pub all_last_name_colonnes: Vec<ColonneDetail>,
@@ -797,8 +1019,10 @@ pub struct PersonaliteJuridique {
 pub struct Tel {
     pub tel: String,
     pub tel_nombre: Vec<i32>,
+    pub tel_carre: Equilibre,
     pub mobile: String,
     pub mobile_nombre: Vec<i32>,
+    pub mobile_carre: Equilibre
 }
 
 #[derive(Serialize, PartialEq)]
@@ -818,4 +1042,10 @@ pub struct ColonneDetail {
     pub total_reduit: i32,
     pub sw1: bool,
     pub sw2: bool
+}
+
+#[derive(Serialize)]
+pub struct Equilibre {
+    pub carre: Vec<Vec<i32>>,
+    pub nom: String,
 }
