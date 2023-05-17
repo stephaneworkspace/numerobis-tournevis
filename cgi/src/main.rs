@@ -57,36 +57,28 @@ fn main() { cgi::handle(|request: cgi::Request| -> cgi::Response {
             day = x.1.parse().unwrap_or(1);
         },
         "first_name" => {
-            let s = &html_escape::decode_html_entities(&x.1);
-            first_name.push_str(&s);
+            first_name.push_str(&x.1);
         },
         "second_name" => {
-            let s = &html_escape::decode_html_entities(&x.1);
-            second_name.push_str(&s);
+            second_name.push_str(&x.1);
         },
         "third_name" => {
-            let s = &html_escape::decode_html_entities(&x.1);
-            third_name.push_str(&s);
+            third_name.push_str(&x.1);
         },
         "last_name_1" => {
-            let s = &html_escape::decode_html_entities(&x.1);
-            last_name_1.push_str(&s);
+            last_name_1.push_str(&x.1);
         },
         "last_name_2" => {
-            let s = &html_escape::decode_html_entities(&x.1);
-            last_name_2.push_str(&s);
+            last_name_2.push_str(&x.1);
         },
         "last_name_3" => {
-            let s = &html_escape::decode_html_entities(&x.1);
-            last_name_3.push_str(&s);
+            last_name_3.push_str(&x.1);
         },
         "tel" => {
-            let s = &html_escape::decode_html_entities(&x.1);
-            tel.push_str(&s);
+            tel.push_str(&x.1);
         },
         "mobile" => {
-            let s = &html_escape::decode_html_entities(&x.1);
-            mobile.push_str(&s);
+            mobile.push_str(&x.1);
         },
         _ => {}
        }

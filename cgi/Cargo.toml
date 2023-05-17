@@ -10,5 +10,4 @@ serde = { version = "1.0.144", features = ["derive"] }
 serde_json = "1.0.85"
 #cgi = "0.6"
 cgi = { path = "./lib/rust-cgi" }
-html-escape = "0.2.13"
 numerobis-tournevis = { path = ".." }
